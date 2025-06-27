@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -42,6 +43,64 @@ public class FXMLDocumentController implements Initializable {
     private Connection connect;
     private ResultSet result;
     private PreparedStatement prepare;
+    
+    
+    public void employeeLogin(){
+      
+        String employeeData = "SELECT * FROM employee WHERE employee_id=? and  password = ?";
+        
+        connect = database.connectionDb();
+        
+        try{
+            
+            Alert alert;
+            prepare =connect.prepareStatement(employeeData);
+            
+            if (employee_id.getText().isEmpty() || employee_password.getText().isEmpty()) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Please fill all blank fields.");
+                alert.showAndWait();
+            }
+            
+            else{
+                prepare.setString(1,employee_id.getText());
+                prepare.setString(2,employee_password.getText());
+                
+                result = prepare.executeQuery();
+                
+                if(result.next()){
+                    //lets create for employee
+                    
+                    alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("information message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Loggin!");
+                    alert.showAndWait();
+                    
+                    employee_loginBtn.getScene().getWindow().hide();
+                
+                
+                     Parent root = FXMLLoader.load(getClass().getResource("employeeDashboard.fxml"));
+                     Stage stage = new Stage();
+                     Scene scene = new Scene(root);
+                     stage.setScene(scene);
+                     stage.show();
+                }
+                
+                else{
+                     alert = new Alert(Alert.AlertType.ERROR);
+                     alert.setTitle("Error");
+                     alert.setHeaderText(null);
+                     alert.setContentText("Wrong employee id/password.");
+                     alert.showAndWait();
+                }
+            }
+            
+        }catch(Exception e) {e.printStackTrace();}
+    
+    }
 
     public void adminLogin() {
         String adminData = "SELECT * FROM admin WHERE username = ? AND password = ?";
