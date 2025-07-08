@@ -10,7 +10,7 @@
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Label layoutX="132.0" layoutY="137.0" prefHeight="92.0" prefWidth="401.0" text="WELCOME EMPLOYEE">
+            <Label layoutX="132.0" layoutY="137.0" prefHeight="92.0" prefWidth="401.0" text="WELCOME EMPLOYEE!">
                <font>
                   <Font size="36.0" />
                </font>

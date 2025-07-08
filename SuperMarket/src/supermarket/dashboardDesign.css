@@ -1,0 +1,86 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jul 4, 2025, 12:25:20 PM
+    Author     : user
+*/
+
+
+.top-form{
+    -fx-background-color:#fff;
+    -fx-border-color: #000;
+    -fx-border-width: .4px .4px .2px .4px;    
+}
+
+.close{
+     -fx-background-color:transparent;
+     -fx-cursor:hand;
+}
+
+.close:hover{
+     -fx-background-color:#dd2f4f;
+}
+
+.minimize{
+     -fx-background-color:transparent;
+     -fx-cursor:hand;
+}
+
+.minimize:hover{
+     -fx-background-color:#ddd;
+}
+
+
+.semi-top-form{
+     -fx-background-color:#efefef;
+    -fx-border-color: #000;
+    -fx-border-width: .2px .4px .8px .4px; 
+}
+
+.nav-form{
+    -fx-background-color: linear-gradient(to top right, #64522c, #a8962b);
+}
+
+.nav-button{
+       -fx-background-color:transparent;
+       -fx-cursor:hand;
+       -fx-font-family:"Arial";
+       -fx-text-fill: #fff;
+       -fx-font-size:14px;
+       -fx-alignment: CENTER_LEFT;
+}
+
+.logout-btn{
+    -fx-background-color: #b58d38;
+    -fx-cursor:hand;
+    -fx-background-radius:8px;
+}
+.logout-btn:hover{
+    -fx-background-color:#d6a135;
+}
+
+.white-bg{
+    -fx-background-color:#fff;
+    -fx-background-radius:8px;
+}
+
+.shadow{
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.4), 5,0,0,0);
+}
+
+.card1{
+    -fx-background-color:linear-gradient(to right, #2e4d6e , #276a99);
+     -fx-background-radius:5px;
+}
+
+.card2{
+    -fx-background-color:linear-gradient(to right, #542c63 , #8825a1);
+     -fx-background-radius:5px;
+}
+
+.card3{
+    -fx-background-color:linear-gradient(to right, #752131 , #ae243f);
+     -fx-background-radius:5px;
+}
