@@ -84,3 +84,101 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-background-color:linear-gradient(to right, #752131 , #ae243f);
      -fx-background-radius:5px;
 }
+
+.textfield {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: linear-gradient(to right, #64522c, #a8962b);
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 3 5 3 5;
+    -fx-font-family: "Tahoma";
+    -fx-font-size: 13px;
+    -fx-text-fill: black;
+    -fx-prompt-text-fill: #888;
+}
+
+
+.textfield:focused {
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: linear-gradient(to right, #a8962b, #64522c);
+}
+
+.combox{
+    -fx-background-color: transparent;
+     -fx-border-color: linear-gradient(to right, #64522c, #a8962b);
+     -fx-border-width: 1px;
+      -fx-font-family: "Tahoma";
+    -fx-font-size: 13px;
+    
+}
+
+.combox:focused{
+    -fx-border-width: 2px;
+}
+
+.add-btn{
+    -fx-background-color: #275578;
+    -fx-background-radius:8px;
+    -fx-cursor:hand;
+    -fx-font-family:"Arial";
+    -fx-text-fill: #fff;
+    -fx-font-size:14px;
+}
+
+.add-btn:hover{
+     -fx-background-color: #2975ab;
+}
+
+.Update-btn{
+    -fx-background-color: #277737;
+    -fx-background-radius:8px;
+    -fx-cursor:hand;
+    -fx-font-family:"Arial";
+    -fx-text-fill: #fff;
+    -fx-font-size:14px;
+}
+
+.Update-btn:hover{
+     -fx-background-color: #30ab67;
+}
+
+.delete-btn{
+    -fx-background-color: #822730;
+    -fx-background-radius:8px;
+    -fx-cursor:hand;
+    -fx-font-family:"Arial";
+    -fx-text-fill: #fff;
+    -fx-font-size:14px;
+}
+
+.delete-btn:hover{
+     -fx-background-color: #b52a38;
+}
+
+.clear-btn{
+    -fx-background-color: #7c3186;
+    -fx-background-radius:8px;
+    -fx-cursor:hand;
+    -fx-font-family:"Arial";
+    -fx-text-fill: #fff;
+    -fx-font-size:14px;
+}
+
+.clear-btn:hover{
+     -fx-background-color: #9328a4;
+}
+
+.search{
+    -fx-background-color: transparent;
+     -fx-border-color: linear-gradient(to right, #64522c, #a8962b);
+    -fx-background-radius:5px;
+    -fx-border-width: 1px;
+    -fx-padding: 0px 0px 0px 28px;
+    -fx-font-family:"Tahoma";
+    -fx-font-size:14px;
+    
+}
+
+.search:focused{
+    -fx-border-width: 2px;
+}
