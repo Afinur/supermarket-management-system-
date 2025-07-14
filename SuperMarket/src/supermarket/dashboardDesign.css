@@ -170,7 +170,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 
 .search{
     -fx-background-color: transparent;
-     -fx-border-color: linear-gradient(to right, #64522c, #a8962b);
+    -fx-border-color: linear-gradient(to right, #64522c, #a8962b);
     -fx-background-radius:5px;
     -fx-border-width: 1px;
     -fx-padding: 0px 0px 0px 28px;
@@ -181,4 +181,34 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 
 .search:focused{
     -fx-border-width: 2px;
+}
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: linear-gradient(to right, #64522c, #a8962b);
+    -fx-border-width: 2px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.table-view .table-cell {
+    -fx-alignment: center;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to right, #64522c, #a8962b);
+    -fx-background-insets: 0;
+    -fx-background-radius: 5px 5px 0 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-pref-height: 50px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-alignment: center;
 }
