@@ -12,8 +12,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class FXMLDocumentController implements Initializable {
 
@@ -43,6 +45,12 @@ public class FXMLDocumentController implements Initializable {
     private Connection connect;
     private ResultSet result;
     private PreparedStatement prepare;
+    
+    private double x=0;
+     private double y=0;
+    
+    
+    
     
     
     public void employeeLogin(){
@@ -137,6 +145,19 @@ public class FXMLDocumentController implements Initializable {
                 Parent root = FXMLLoader.load(getClass().getResource("adminDashboard.fxml"));
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
+                
+                root.setOnMousePressed((MouseEvent event)->{
+                    x= event.getSceneX();
+                    y= event.getSceneY();
+                    
+                });
+                
+                root.setOnMouseDragged((MouseEvent event)->{
+                    stage.setX(event.getScreenX() -x);
+                    stage.setY(event.getScreenY() -y);
+                });
+                
+                stage.initStyle(StageStyle.TRANSPARENT);
                 stage.show();
 
             } else {
