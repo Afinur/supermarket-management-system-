@@ -125,13 +125,15 @@ public class FXMLDocumentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-
+            
             prepare = connect.prepareStatement(adminData);
             prepare.setString(1, admin_username.getText());
             prepare.setString(2, admin_password.getText());
             result = prepare.executeQuery();
 
             if (result.next()) {
+                
+                getData.username = admin_username.getText();
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Login Successful");
                 alert.setHeaderText(null);

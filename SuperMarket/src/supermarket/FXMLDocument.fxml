@@ -23,7 +23,7 @@
                      </font>
                   </Label>
                </children></AnchorPane>
-            <AnchorPane fx:id="admin_from" layoutX="285.0" prefHeight="457.0" prefWidth="321.0" styleClass="right-form" stylesheets="@loginDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="admin_from" layoutX="285.0" prefHeight="457.0" prefWidth="321.0" styleClass="right-form" stylesheets="@loginDesign.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                  
                   <Label layoutX="74.0" layoutY="148.0" text="Admin Sign in">
@@ -50,7 +50,7 @@
                   <FontAwesomeIcon glyphName="USER" layoutX="115.0" layoutY="129.0" size="80 rem" text="" wrappingWidth="69.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="employee_from" layoutX="309.0" layoutY="10.0" onDragDetected="#close" prefHeight="457.0" prefWidth="321.0" styleClass="right-form" stylesheets="@loginDesign.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="299.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="employee_from" layoutX="309.0" layoutY="10.0" onDragDetected="#close" prefHeight="457.0" prefWidth="321.0" styleClass="right-form" stylesheets="@loginDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="299.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label layoutX="74.0" layoutY="148.0" text="Employee Sign In">
                      <font>

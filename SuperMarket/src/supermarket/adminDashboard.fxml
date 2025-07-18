@@ -104,7 +104,7 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="dashboard_form" layoutX="112.0" layoutY="140.0" prefHeight="555.0" prefWidth="901.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="dashboard_form" layoutX="112.0" layoutY="140.0" prefHeight="555.0" prefWidth="901.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="11.0" layoutY="8.0" prefHeight="539.0" prefWidth="878.0" stylesheets="@dashboardDesign.css">
                                  <styleClass>
@@ -177,7 +177,7 @@
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="addProducts_form" layoutX="104.0" layoutY="158.0" prefHeight="555.0" prefWidth="901.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="addProducts_form" layoutX="104.0" layoutY="158.0" prefHeight="555.0" prefWidth="901.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="8.0" layoutY="13.0" prefHeight="527.0" prefWidth="201.0" stylesheets="@dashboardDesign.css">
                                  <styleClass>
@@ -208,17 +208,17 @@
                                           <Font name="Tahoma" size="14.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="addProducts_status" layoutX="92.0" layoutY="192.0" prefHeight="30.0" prefWidth="92.0" promptText="Choose" styleClass="combox" stylesheets="@dashboardDesign.css" />
+                                    <ComboBox fx:id="addProducts_status" layoutX="92.0" layoutY="192.0" onAction="#addProductsStatusList" prefHeight="30.0" prefWidth="92.0" promptText="Choose" styleClass="combox" stylesheets="@dashboardDesign.css" />
                                     <Label layoutX="51.0" layoutY="235.0" text="Price:">
                                        <font>
                                           <Font name="Tahoma" size="14.0" />
                                        </font>
                                     </Label>
                                     <TextField fx:id="addProducts_price" layoutX="83.0" layoutY="229.0" prefHeight="30.0" prefWidth="109.0" styleClass="textfield" stylesheets="@dashboardDesign.css" />
-                                    <Button fx:id="addProducts_addBtn" layoutX="19.0" layoutY="345.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="73.0" styleClass="add-btn" stylesheets="@dashboardDesign.css" text="ADD" />
-                                    <Button fx:id="addProducts_updateBtn" layoutX="107.0" layoutY="345.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="72.0" styleClass="Update-btn" stylesheets="@dashboardDesign.css" text="Update" />
-                                    <Button fx:id="addProducts_clearBtn" layoutX="18.0" layoutY="399.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="75.0" styleClass="clear-btn" stylesheets="@dashboardDesign.css" text="Clear" />
-                                    <Button fx:id="addProducts_deleteBtn" layoutX="107.0" layoutY="399.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="73.0" styleClass="delete-btn" stylesheets="@dashboardDesign.css" text="Delete" />
+                                    <Button fx:id="addProducts_addBtn" layoutX="19.0" layoutY="345.0" mnemonicParsing="false" onAction="#addProductsAdd" prefHeight="40.0" prefWidth="73.0" styleClass="add-btn" stylesheets="@dashboardDesign.css" text="ADD" />
+                                    <Button fx:id="addProducts_updateBtn" layoutX="107.0" layoutY="345.0" mnemonicParsing="false" onAction="#addProductsUpdate" prefHeight="40.0" prefWidth="72.0" styleClass="Update-btn" stylesheets="@dashboardDesign.css" text="Update" />
+                                    <Button fx:id="addProducts_clearBtn" layoutX="18.0" layoutY="399.0" mnemonicParsing="false" onAction="#addProductsClear" prefHeight="40.0" prefWidth="75.0" styleClass="clear-btn" stylesheets="@dashboardDesign.css" text="Clear" />
+                                    <Button fx:id="addProducts_deleteBtn" layoutX="107.0" layoutY="399.0" mnemonicParsing="false" onAction="#addProductsDelete" prefHeight="40.0" prefWidth="73.0" styleClass="delete-btn" stylesheets="@dashboardDesign.css" text="Delete" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="224.0" layoutY="13.0" prefHeight="527.0" prefWidth="666.0" stylesheets="@dashboardDesign.css">
@@ -229,7 +229,7 @@
                                  <children>
                                     <TextField fx:id="addProducts_search" layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="197.0" styleClass="search" stylesheets="@dashboardDesign.css" AnchorPane.leftAnchor="14.0" />
                                     <FontAwesomeIcon glyphName="SEARCH" layoutX="24.0" layoutY="35.0" size="1.5em" text="" />
-                                    <TableView fx:id="addProducts_tableView" layoutX="9.0" layoutY="52.0" prefHeight="465.0" prefWidth="651.0">
+                                    <TableView fx:id="addProducts_tableView" layoutX="9.0" layoutY="52.0" onMouseClicked="#addProductSelect" prefHeight="465.0" prefWidth="651.0">
                                       <columns>
                                         <TableColumn fx:id="addProducts_col_productID" prefWidth="128.0" text="Product ID" />
                                         <TableColumn fx:id="addProducts_col_branchName" prefWidth="133.0" text="Branch Name" />
