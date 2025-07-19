@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.cell.PropertyValueFactory;
 //import java.sql.PreparedStatement;
 
@@ -124,22 +127,22 @@ public class adminDashboardController implements Initializable {
     private Button employees_clearBtn;
 
     @FXML
-    private TableColumn<?, ?> employees_col_date;
+    private TableColumn<employeeData, String> employees_col_date;
 
     @FXML
-    private TableColumn<?, ?> employees_col_employeeID;
+    private TableColumn<employeeData, String> employees_col_employeeID;
 
     @FXML
-    private TableColumn<?, ?> employees_col_firstName;
+    private TableColumn<employeeData, String> employees_col_firstName;
 
     @FXML
-    private TableColumn<?, ?> employees_col_gender;
+    private TableColumn<employeeData, String> employees_col_gender;
 
     @FXML
-    private TableColumn<?, ?> employees_col_lastName;
+    private TableColumn<employeeData, String> employees_col_lastName;
 
     @FXML
-    private TableColumn<?, ?> employees_col_password;
+    private TableColumn<employeeData, String> employees_col_password;
 
     @FXML
     private Button employees_deleteBtn;
@@ -154,7 +157,7 @@ public class adminDashboardController implements Initializable {
     private AnchorPane employees_from;
 
     @FXML
-    private ComboBox<?> employees_gender;
+    private ComboBox<String> employees_gender;
 
     @FXML
     private TextField employees_lastName;
@@ -166,7 +169,7 @@ public class adminDashboardController implements Initializable {
     private Button employees_saveBtn;
 
     @FXML
-    private TableView<?> employees_tableView;
+    private TableView<employeeData> employees_tableView;
 
     @FXML
     private Button employees_updateBtn;
@@ -182,11 +185,16 @@ public class adminDashboardController implements Initializable {
 
     @FXML
     private Button close;
+    
+    @FXML
+    private DatePicker employees_date;
 
     @FXML
     private Button minimize;
     private double x = 0;
     private double y = 0;
+    
+    
 
     //database tools
    private Connection connect;
@@ -366,6 +374,40 @@ public class adminDashboardController implements Initializable {
        addProducts_status.setItems(statusData);
    }
    
+   public void addProductsSearch() {
+    FilteredList<productData> filter = new FilteredList<>(addproductsList, e -> true);
+
+    addProducts_search.textProperty().addListener((Observable, oldValue, newValue) -> {
+        filter.setPredicate(product -> {
+            if (newValue == null || newValue.isEmpty()) {
+                return true;
+            }
+
+            String searchKey = newValue.toLowerCase();
+
+            if (product.getProductId().toLowerCase().contains(searchKey)) {
+                return true;
+            } else if (product.getBrand().toLowerCase().contains(searchKey)) {
+                return true;
+            } else if (product.getProductName().toLowerCase().contains(searchKey)) {
+                return true;
+            } else if (product.getStatus().toLowerCase().contains(searchKey)) {
+                return true;
+            } else if (String.valueOf(product.getPrice()).contains(searchKey)) {
+                return true;
+            }
+
+            return false;
+        });
+    });
+
+    SortedList<productData> sortedList = new SortedList<>(filter);
+    sortedList.comparatorProperty().bind(addProducts_tableView.comparatorProperty());
+    addProducts_tableView.setItems(sortedList);
+}
+
+  
+   
    public ObservableList<productData> addProductsListData(){
        ObservableList<productData> prodList = FXCollections.observableArrayList();
        
@@ -392,7 +434,6 @@ public class adminDashboardController implements Initializable {
        }catch(Exception e){e.printStackTrace();}
        return  prodList;
    }
-   
    private ObservableList<productData> addproductsList;
    public void addProductsShowData(){ //to show the data tableview
        addproductsList = addProductsListData();
@@ -404,6 +445,7 @@ public class adminDashboardController implements Initializable {
        addProducts_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
        
        addProducts_tableView.setItems( addproductsList);
+       addProductsSearch();
    }
    
    
@@ -420,6 +462,256 @@ public class adminDashboardController implements Initializable {
        addProducts_productName.setText(prod.getProductName());
        addProducts_price.setText(String.valueOf(prod.getPrice()));
    }
+   
+   
+   
+   
+   
+   public ObservableList<employeeData> employeesListData() {
+    ObservableList<employeeData> emData = FXCollections.observableArrayList();
+
+    String sql = "SELECT * FROM employee";
+    connect = database.connectionDb();
+
+    try {
+        
+        employeeData employeeD;
+        prepare = connect.prepareStatement(sql);
+        result = prepare.executeQuery();
+
+        
+
+        while (result.next()) {
+            employeeD = new employeeData(
+                result.getString("employee_id"),
+                result.getString("password"),
+                result.getString("firstName"),
+                result.getString("lastName"),
+                result.getString("gender"),
+                result.getDate("date"));
+                    emData.add(employeeD);
+        }
+
+    } catch (Exception e) {e.printStackTrace(); }
+    return emData;
+}
+   
+    private ObservableList<employeeData> employeesList;
+   public void employeesShowData(){ //to show the data tableview
+      employeesList = employeesListData();
+       
+       employees_col_employeeID.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
+       employees_col_password.setCellValueFactory(new PropertyValueFactory<>("password"));
+       employees_col_firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        employees_col_lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+       employees_col_gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+       employees_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+       
+       employees_tableView.setItems(employeesList);
+       
+      
+   }
+   
+  public void employeesSelect() {
+    employeeData employeeD = employees_tableView.getSelectionModel().getSelectedItem();
+    int num = employees_tableView.getSelectionModel().getSelectedIndex();
+
+    if (employeeD == null || num < 0) {
+        System.out.println("No row selected.");
+        return;
+    }
+
+    // Fill all form fields with selected row's values
+    employees_employeeID.setText(employeeD.getEmployeeId().trim());
+    employees_password.setText(employeeD.getPassword().trim());
+    employees_firstName.setText(employeeD.getFirstName().trim());
+    employees_lastName.setText(employeeD.getLastName().trim());
+    employees_gender.getSelectionModel().select(employeeD.getGender().trim());
+
+    System.out.println("Selected employee ID: " + employeeD.getEmployeeId());
+}
+
+
+
+
+
+   public void employeesGenderList() {
+    List<String> genderL = new ArrayList<>();
+
+    genderL.add("Male");
+    genderL.add("Female");
+
+    ObservableList listG = FXCollections.observableArrayList(genderL);
+    employees_gender.setItems(listG);
+}
+
+   public void employeesAdd() {
+    String insertEmp = "INSERT INTO employee (employee_id, password, firstName, lastName, gender, date) VALUES (?, ?, ?, ?, ?, ?)";
+
+    connect = database.connectionDb();
+
+    try {
+        Alert alert;
+
+        if (employees_employeeID.getText().isEmpty()
+                || employees_password.getText().isEmpty()
+                || employees_firstName.getText().isEmpty()
+                || employees_lastName.getText().isEmpty()
+                || employees_gender.getSelectionModel().getSelectedItem() == null) {
+
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please fill all fields!");
+            alert.showAndWait();
+        } else {
+            // Date now
+            java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+
+            prepare = connect.prepareStatement(insertEmp);
+            prepare.setString(1, employees_employeeID.getText());
+            prepare.setString(2, employees_password.getText());
+            prepare.setString(3, employees_firstName.getText());
+            prepare.setString(4, employees_lastName.getText());
+            prepare.setString(5, (String) employees_gender.getSelectionModel().getSelectedItem());
+            prepare.setDate(6, date);
+
+            prepare.executeUpdate();
+
+            alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Employee added successfully!");
+            alert.showAndWait();
+
+            employeesShowData(); // refresh table
+            employeesClear();    // clear form
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+   public void employeesClear() {
+    employees_employeeID.setText("");
+    employees_password.setText("");
+    employees_firstName.setText("");
+    employees_lastName.setText("");
+    employees_gender.getSelectionModel().clearSelection();
+}
+
+ public void updateEmployee() {
+    String sql = "UPDATE employee SET password = ?, firstName = ?, lastName = ?, gender = ? WHERE employee_id = ?";
+
+    connect = database.connectionDb();
+
+    try {
+        Alert alert;
+
+        // Check if any field is empty
+        if (employees_employeeID.getText().isEmpty()
+                || employees_password.getText().isEmpty()
+                || employees_firstName.getText().isEmpty()
+                || employees_lastName.getText().isEmpty()
+                || employees_gender.getSelectionModel().getSelectedItem() == null) {
+
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please fill all fields before updating!");
+            alert.showAndWait();
+            return;
+        }
+
+        // Prepare SQL statement
+        prepare = connect.prepareStatement(sql);
+        prepare.setString(1, employees_password.getText().trim());
+        prepare.setString(2, employees_firstName.getText().trim());
+        prepare.setString(3, employees_lastName.getText().trim());
+        prepare.setString(4, employees_gender.getSelectionModel().getSelectedItem().trim());
+        prepare.setString(5, employees_employeeID.getText().trim()); // Important: trimmed ID
+
+        // Execute update
+        int rows = prepare.executeUpdate();
+        System.out.println("Rows affected: " + rows); // Debugging
+
+        if (rows > 0) {
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText(null);
+            alert.setContentText("Employee updated successfully!");
+            alert.showAndWait();
+
+            employeesShowData();  // Refresh table
+            employeesClear();     // Clear input fields
+        } else {
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Update Failed");
+            alert.setHeaderText(null);
+            alert.setContentText("No record found with the given Employee ID.");
+            alert.showAndWait();
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+ 
+ public void employeesDelete() {
+    String deleteSql = "DELETE FROM employee WHERE employee_id = ?";
+
+    connect = database.connectionDb();
+
+    try {
+        Alert alert;
+
+        if (employees_employeeID.getText().isEmpty()) {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select an employee to delete!");
+            alert.showAndWait();
+            return;
+        }
+
+        alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Delete");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to delete Employee ID: " + employees_employeeID.getText() + "?");
+
+        Optional<ButtonType> option = alert.showAndWait();
+
+        if (option.isPresent() && option.get() == ButtonType.OK) {
+            prepare = connect.prepareStatement(deleteSql);
+            prepare.setString(1, employees_employeeID.getText().trim());
+            int affectedRows = prepare.executeUpdate();
+
+            if (affectedRows > 0) {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Deleted");
+                alert.setHeaderText(null);
+                alert.setContentText("Employee deleted successfully!");
+                alert.showAndWait();
+
+                employeesShowData();  // Refresh table after deletion
+                employeesClear();     // Clear input fields
+            } else {
+                alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Delete Failed");
+                alert.setHeaderText(null);
+                alert.setContentText("No employee found with this ID.");
+                alert.showAndWait();
+            }
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+   
+   
    
    
     public void logout() {
@@ -508,6 +800,8 @@ public class adminDashboardController implements Initializable {
             employees_btn.setStyle("-fx-background-color: linear-gradient(to top right, #896b34, #b8a536);");
             addProducts_btn.setStyle("-fx-background-color:transparent");
             dashboard_btn.setStyle("-fx-background-color:transparent");
+            
+            employeesShowData();
 
         }
     }
@@ -531,6 +825,13 @@ public class adminDashboardController implements Initializable {
         addProductsShowData();
         addProductsStatusList();
         displayUsername();
+        employeesShowData();
+        employeesGenderList();
+        employees_tableView.setOnMouseClicked(event -> {
+        employeesSelect();
+    });
+       
+       
     }
-
 }
+

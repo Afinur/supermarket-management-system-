@@ -184,7 +184,7 @@ public class FXMLDocumentController implements Initializable {
             employee_from.setVisible(false);
         }
     }
-
+    
     public void close() {
         System.exit(0);
     }

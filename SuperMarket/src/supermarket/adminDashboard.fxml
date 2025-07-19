@@ -177,7 +177,7 @@
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="addProducts_form" layoutX="104.0" layoutY="158.0" prefHeight="555.0" prefWidth="901.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="addProducts_form" layoutX="104.0" layoutY="158.0" prefHeight="555.0" prefWidth="901.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="8.0" layoutY="13.0" prefHeight="527.0" prefWidth="201.0" stylesheets="@dashboardDesign.css">
                                  <styleClass>
@@ -242,7 +242,7 @@
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="employees_from" layoutX="14.0" layoutY="14.0" prefHeight="555.0" prefWidth="901.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="employees_from" layoutX="14.0" layoutY="14.0" prefHeight="555.0" prefWidth="901.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="15.0" layoutY="14.0" prefHeight="530.0" prefWidth="877.0" stylesheets="@dashboardDesign.css">
                                  <styleClass>
@@ -256,7 +256,7 @@
                                           <String fx:value="shadow" />
                                        </styleClass>
                                        <children>
-                                          <TableView fx:id="employees_tableView" layoutX="27.0" layoutY="19.0" prefHeight="194.0" prefWidth="824.0">
+                                          <TableView fx:id="employees_tableView" layoutX="27.0" layoutY="19.0" onMouseClicked="#employeesSelect" prefHeight="194.0" prefWidth="824.0">
                                             <columns>
                                               <TableColumn fx:id="employees_col_employeeID" prefWidth="137.0" text="Employee ID" />
                                               <TableColumn fx:id="employees_col_password" prefWidth="126.0" text="Password" />
@@ -293,10 +293,10 @@
                                     </Label>
                                     <TextField fx:id="employees_lastName" layoutX="457.0" layoutY="332.0" prefHeight="30.0" prefWidth="155.0" styleClass="textfield" stylesheets="@dashboardDesign.css" />
                                     <ComboBox fx:id="employees_gender" layoutX="460.0" layoutY="380.0" prefHeight="30.0" prefWidth="132.0" styleClass="combox" stylesheets="@dashboardDesign.css" />
-                                    <Button fx:id="employees_saveBtn" layoutX="781.0" layoutY="454.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="65.0" styleClass="add-btn" stylesheets="@dashboardDesign.css" text="save" />
-                                    <Button fx:id="employees_updateBtn" layoutX="699.0" layoutY="454.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="65.0" styleClass="Update-btn" stylesheets="@dashboardDesign.css" text="Update" />
-                                    <Button fx:id="employees_deleteBtn" layoutX="574.0" layoutY="454.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="65.0" styleClass="delete-btn" stylesheets="@dashboardDesign.css" text="Delete" />
-                                    <Button fx:id="employees_clearBtn" layoutX="492.0" layoutY="454.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="65.0" styleClass="clear-btn" stylesheets="@dashboardDesign.css" text="Clear" />
+                                    <Button fx:id="employees_saveBtn" layoutX="781.0" layoutY="454.0" mnemonicParsing="false" onAction="#employeesAdd" prefHeight="41.0" prefWidth="65.0" styleClass="add-btn" stylesheets="@dashboardDesign.css" text="save" />
+                                    <Button fx:id="employees_updateBtn" layoutX="699.0" layoutY="454.0" mnemonicParsing="false" onAction="#updateEmployee" prefHeight="41.0" prefWidth="65.0" styleClass="Update-btn" stylesheets="@dashboardDesign.css" text="Update" />
+                                    <Button fx:id="employees_deleteBtn" layoutX="574.0" layoutY="454.0" mnemonicParsing="false" onAction="#employeesDelete" prefHeight="41.0" prefWidth="65.0" styleClass="delete-btn" stylesheets="@dashboardDesign.css" text="Delete" />
+                                    <Button fx:id="employees_clearBtn" layoutX="492.0" layoutY="454.0" mnemonicParsing="false" onAction="#employeesClear" prefHeight="41.0" prefWidth="65.0" styleClass="clear-btn" stylesheets="@dashboardDesign.css" text="Clear" />
                                     <Label layoutX="373.0" layoutY="379.0" prefHeight="32.0" prefWidth="72.0" text="gender:">
                                        <font>
                                           <Font size="17.0" />
