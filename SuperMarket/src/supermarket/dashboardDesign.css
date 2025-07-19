@@ -52,6 +52,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
        -fx-alignment: CENTER_LEFT;
 }
 
+.nav-button-default{
+       -fx-background-color: linear-gradient(to top right, #896b34, #b8a536);
+       -fx-cursor:hand;
+       -fx-font-family:"Arial";
+       -fx-text-fill: #fff;
+       -fx-font-size:14px;
+       -fx-alignment: CENTER_LEFT;
+}
 .logout-btn{
     -fx-background-color: #b58d38;
     -fx-cursor:hand;
@@ -211,4 +219,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-font-weight: bold;
     -fx-font-size: 14px;
     -fx-alignment: center;
+}
+
+.pay-btn{
+    -fx-background-color: #317584;
+    -fx-background-radius:8px;
+    -fx-cursor:hand;
+    -fx-font-family:"Arial";
+    -fx-text-fill: #fff;
+    -fx-font-size:14px;
+}
+
+.pay-btn:hover{
+     -fx-background-color: #33a2b8;
+}
+
+.receipt-btn{
+    -fx-background-color: #5e7230;
+    -fx-background-radius:8px;
+    -fx-cursor:hand;
+    -fx-font-family:"Arial";
+    -fx-text-fill: #fff;
+    -fx-font-size:14px;
+}
+
+.receipt-btn:hover{
+     -fx-background-color: #89ae32;
 }
