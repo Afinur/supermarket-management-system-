@@ -70,9 +70,9 @@
                               <String fx:value="nav-button-default" />
                            </styleClass>
                         </Button>
-                        <Button fx:id="logout" layoutX="14.0" layoutY="498.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" stylesheets="@dashboardDesign.css">
+                        <Button fx:id="logout" layoutX="14.0" layoutY="498.0" mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="35.0" stylesheets="@dashboardDesign.css">
                            <graphic>
-                              <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" size="2.2em" />
+                              <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" size="2.2em" text="" />
                            </graphic>
                            <styleClass>
                               <String fx:value="logout-btn" />
@@ -123,14 +123,13 @@
                                           <Font name="Tahoma" size="17.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="purchas_brand" layoutX="144.0" layoutY="42.0" styleClass="textfield" stylesheets="@dashboardDesign.css" />
+                                    <TextField fx:id="purchas_brand" layoutX="144.0" layoutY="42.0" onAction="#purchaseSearchBrand" styleClass="textfield" stylesheets="@dashboardDesign.css" />
                                     <Label layoutX="22.0" layoutY="106.0" text="Product Name:">
                                        <font>
                                           <Font name="Tahoma" size="17.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="purchas_productName" layoutX="145.0" layoutY="104.0" prefHeight="30.0" prefWidth="150.0" promptText="Choose" styleClass="combox" stylesheets="@dashboardDesign.css" />
-                                    <Spinner fx:id="purchas_quantity" layoutX="160.0" layoutY="174.0" prefHeight="26.0" prefWidth="107.0" styleClass="combox" stylesheets="@dashboardDesign.css" />
+                                    <ComboBox fx:id="purchas_productName" layoutX="145.0" layoutY="104.0" onKeyReleased="#onBrandTyped" prefHeight="30.0" prefWidth="150.0" promptText="Choose" styleClass="combox" stylesheets="@dashboardDesign.css" />
                                     <Label layoutX="64.0" layoutY="177.0" text="Quantity:">
                                        <font>
                                           <Font name="Tahoma" size="17.0" />
@@ -149,6 +148,7 @@
                                     </Label>
                                     <Button fx:id="purchas_pay" layoutX="234.0" layoutY="381.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="79.0" styleClass="pay-btn" stylesheets="@dashboardDesign.css" text="Pay" />
                                     <Button fx:id="purchas_recipt" layoutX="55.0" layoutY="381.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="79.0" styleClass="receipt-btn" stylesheets="@dashboardDesign.css" text="Recipt" />
+                                    <Spinner fx:id="purchas_quantity" layoutX="148.0" layoutY="175.0" onMouseClicked="#purchaseSpinnerValue" prefHeight="25.0" prefWidth="126.0" />
                                  </children>
                               </AnchorPane>
                            </children>

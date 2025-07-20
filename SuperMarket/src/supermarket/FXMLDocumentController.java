@@ -81,6 +81,9 @@ public class FXMLDocumentController implements Initializable {
                 if(result.next()){
                     //lets create for employee
                     
+                    getData.employeeId = employee_id.getText();
+                    
+                    
                     alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("information message");
                     alert.setHeaderText(null);
@@ -93,6 +96,24 @@ public class FXMLDocumentController implements Initializable {
                      Parent root = FXMLLoader.load(getClass().getResource("employeeDashboard.fxml"));
                      Stage stage = new Stage();
                      Scene scene = new Scene(root);
+                     
+                     root.setOnMousePressed((MouseEvent event) ->{
+                         
+                         x = event.getSceneX();
+                         y = event.getSceneY();
+                         
+                     });
+                     
+                     
+                      root.setOnMouseDragged((MouseEvent event) ->{
+                          
+                      stage.setX(event.getScreenX() - x);
+                      stage.setX(event.getScreenX() - x);
+                      });
+                     
+                     stage.initStyle(StageStyle.TRANSPARENT);
+                     
+                     
                      stage.setScene(scene);
                      stage.show();
                 }
