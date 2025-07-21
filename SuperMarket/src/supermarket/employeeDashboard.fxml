@@ -135,7 +135,7 @@
                                           <Font name="Tahoma" size="17.0" />
                                        </font>
                                     </Label>
-                                    <Button fx:id="purchas_add" layoutX="259.0" layoutY="224.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="73.0" styleClass="add-btn" stylesheets="@dashboardDesign.css" text="Add" />
+                                    <Button fx:id="purchas_add" layoutX="259.0" layoutY="224.0" mnemonicParsing="false" onAction="#addToTable" prefHeight="43.0" prefWidth="73.0" styleClass="add-btn" stylesheets="@dashboardDesign.css" text="Add" />
                                     <Label layoutX="123.0" layoutY="319.0" text="Total:">
                                        <font>
                                           <Font size="18.0" />
@@ -146,9 +146,10 @@
                                           <Font name="Arial" size="24.0" />
                                        </font>
                                     </Label>
-                                    <Button fx:id="purchas_pay" layoutX="234.0" layoutY="381.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="79.0" styleClass="pay-btn" stylesheets="@dashboardDesign.css" text="Pay" />
-                                    <Button fx:id="purchas_recipt" layoutX="55.0" layoutY="381.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="79.0" styleClass="receipt-btn" stylesheets="@dashboardDesign.css" text="Recipt" />
+                                    <Button fx:id="purchas_pay" layoutX="235.0" layoutY="369.0" mnemonicParsing="false" onAction="#pay" prefHeight="52.0" prefWidth="79.0" styleClass="pay-btn" stylesheets="@dashboardDesign.css" text="Pay" />
+                                    <Button fx:id="purchas_recipt" layoutX="55.0" layoutY="369.0" mnemonicParsing="false" onAction="#generateReceipt" prefHeight="52.0" prefWidth="79.0" styleClass="receipt-btn" stylesheets="@dashboardDesign.css" text="Recipt" />
                                     <Spinner fx:id="purchas_quantity" layoutX="148.0" layoutY="175.0" onMouseClicked="#purchaseSpinnerValue" prefHeight="25.0" prefWidth="126.0" />
+                                    <Button fx:id="purchas_resetBtn" layoutX="55.0" layoutY="454.0" mnemonicParsing="false" onAction="#resetForm" prefHeight="52.0" prefWidth="79.0" styleClass="clear-btn" stylesheets="@dashboardDesign.css" text="Reset" />
                                  </children>
                               </AnchorPane>
                            </children>

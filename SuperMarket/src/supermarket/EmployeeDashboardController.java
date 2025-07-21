@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -37,6 +37,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 //import java.sql.SQLException;
+ import java.sql.Date;
 
 
 /**
@@ -83,6 +84,7 @@ public class EmployeeDashboardController implements Initializable {
     private void onBrandTyped() {
     purchaseSearchBrand();
      }
+   
     
     
    private Connection connect;
@@ -121,10 +123,217 @@ public class EmployeeDashboardController implements Initializable {
         e.printStackTrace();
     }
 }
+  
+  
+  // Controller class এর ভিতরে রাখো নিচের মেথডটি
+private int generateCustomerId() {
+    int id = 1;
+    try {
+        String query = "SELECT MAX(customer_id) AS max_id FROM customer";
+        connect = database.connectionDb();
+        prepare = connect.prepareStatement(query);
+        result = prepare.executeQuery();
+        if (result.next()) {
+            id = result.getInt("max_id") + 1;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return id;
+}
 
 
+  
+@FXML
+private void addToTable() {
+    String brand = purchas_brand.getText().trim();
+    String product = purchas_productName.getValue();
+    int quantity = purchas_quantity.getValue();
+
+    if (brand.isEmpty() || product == null || quantity <= 0) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText(null);
+        alert.setContentText("Please enter all fields correctly.");
+        alert.showAndWait();
+        return;
+    }
+
+    double price = 0;
+    Date date = new Date(System.currentTimeMillis());
+    int customerId = generateCustomerId();
+
+    try {
+        connect = database.connectionDb();
+
+        String sql = "SELECT price FROM product WHERE brand = ? AND product_name = ?";
+        prepare = connect.prepareStatement(sql);
+        prepare.setString(1, brand);
+        prepare.setString(2, product);
+        result = prepare.executeQuery();
+
+        if (result.next()) {
+            price = result.getDouble("price") * quantity;
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Product not found!");
+            alert.showAndWait();
+            return;
+        }
+
+        customerData item = new customerData(customerId, brand, product, quantity, price, date);
+        purchaseList.add(item);
+        purchas_tableView.setItems(purchaseList); // update TableView
+
+        String insertCustomer = "INSERT INTO customer (customer_id, brand, productName, quantity, price, date) VALUES (?, ?, ?, ?, ?, ?)";
+        prepare = connect.prepareStatement(insertCustomer);
+        prepare.setInt(1, customerId);
+        prepare.setString(2, brand);
+        prepare.setString(3, product);
+        prepare.setInt(4, quantity);
+        prepare.setDouble(5, price);
+        prepare.setDate(6, date);
+        prepare.executeUpdate();
+
+        System.out.println("Added to customer table with date: " + date);
+        calculateTotal();
+        resetForm();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
+public void calculateTotal() {
+    double total = 0;
+    for (customerData item : purchaseList) {
+        total += item.getPrice();
+    }
+    purchas_total.setText(String.format("৳ %.2f", total));
+}
+
+public void resetForm() {
+    purchas_brand.clear();
+    purchas_productName.getItems().clear();
+    purchas_productName.setValue(null);
+    purchas_quantity.getValueFactory().setValue(0);
+}
+
+
+private void showAlert(Alert.AlertType alertType, String message) {
+    Alert alert = new Alert(alertType);
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.showAndWait();
+}
+
+
+  @FXML
+private void pay() {
+    if (purchaseList.isEmpty()) {
+        showAlert(Alert.AlertType.WARNING, "Cart is empty. Add items before payment.");
+        return;
+    }
+
+    double total = 0;
+    int customerId = purchaseList.get(0).getCustomerId(); // customer_id
+    Date date = new Date(System.currentTimeMillis());
+
+    for (customerData item : purchaseList) {
+        total += item.getPrice();
+    }
+
+    try {
+        connect = database.connectionDb();
+        String sql = "INSERT INTO customer_receipt (customer_id, total, date) VALUES (?, ?, ?)";
+        prepare = connect.prepareStatement(sql);
+        prepare.setInt(1, customerId);
+        prepare.setDouble(2, total);
+        prepare.setDate(3, new java.sql.Date(date.getTime()));
+        prepare.executeUpdate();
+
+        showAlert(Alert.AlertType.INFORMATION, "Payment successful! You can now generate receipt.");
+
+        paymentDone = true;  // mark payment done
+
+        // **DO NOT CLEAR purchaseList or table here**
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        showAlert(Alert.AlertType.ERROR, "Something went wrong during payment.");
+    }
+}
+
+private boolean paymentDone = false;
    
-   
+@FXML
+private void generateReceipt() {
+    if (!paymentDone) {
+        showAlert(Alert.AlertType.WARNING, "Please complete payment before generating receipt.");
+        return;
+    }
+
+    if (purchaseList == null || purchaseList.isEmpty()) {
+        showAlert(Alert.AlertType.WARNING, "No purchases to generate receipt.");
+        return;
+    }
+
+    StringBuilder receipt = new StringBuilder();
+    double total = 0;
+
+    receipt.append("\t     SUPERMARKET RECEIPT\n");
+    receipt.append("========================================\n");
+    receipt.append("Customer ID : ").append(customerId).append("\n");
+    receipt.append("Date        : ").append(new Date(System.currentTimeMillis())).append("\n");
+    receipt.append("----------------------------------------\n");
+    receipt.append(String.format("%-10s %-15s %-5s %-7s\n", "Brand", "Product", "Qty", "Price"));
+    receipt.append("----------------------------------------\n");
+
+    for (customerData data : purchaseList) {
+        receipt.append(String.format("%-10s %-15s %-5d %-7.2f\n",
+                data.getBrand(),
+                data.getProductName(),
+                data.getQuantity(),
+                data.getPrice()));
+        total += data.getPrice();
+    }
+
+    receipt.append("========================================\n");
+    receipt.append(String.format("Total Amount : %.2f\n", total));
+    receipt.append("========================================\n");
+    receipt.append("       THANK YOU FOR SHOPPING!\n");
+
+    try {
+        String desktopPath = System.getProperty("user.home") + "/Desktop";
+        String filename = desktopPath + "/receipt_" + customerId + ".txt";
+
+        java.io.FileWriter writer = new java.io.FileWriter(filename);
+        writer.write(receipt.toString());
+        writer.close();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText("Receipt saved on Desktop:\n" + filename);
+        alert.showAndWait();
+
+        // Open in Notepad (Windows)
+        java.awt.Desktop.getDesktop().open(new java.io.File(filename));
+
+        System.out.println("Receipt saved and opened: " + filename);
+
+        // Optional: clear cart and reset after receipt generation
+        purchaseList.clear();
+        purchas_tableView.getItems().clear();
+        purchas_total.setText("৳ 0.00");
+        paymentDone = false;  // reset flag for next customer
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
    
    
    private SpinnerValueFactory spinner;
