@@ -710,8 +710,51 @@ public class adminDashboardController implements Initializable {
     }
 }
 
+  
    
-   
+   public void dashboardDisplayCounts() {
+    connect = database.connectionDb();
+
+    // Use 'id' to count employees
+    String sqlActiveEmployees = "SELECT COUNT(id) FROM employee";
+  String sqlTodayIncome = "SELECT SUM(price) FROM customer WHERE date = CURDATE()";
+   String sqlTotalIncome = "SELECT SUM(price) FROM customer";
+
+    try {
+        // --- Active Employees ---
+        prepare = connect.prepareStatement(sqlActiveEmployees);
+        result = prepare.executeQuery();
+        if (result.next()) {
+            int count = result.getInt(1);
+            System.out.println("Active Employee (by ID): " + count);
+            dashboard_activeEmployee.setText(String.valueOf(count));
+        }
+        // --- Today's Income ---
+        prepare = connect.prepareStatement(sqlTodayIncome);
+        result = prepare.executeQuery();
+        if (result.next()) {
+            Object todayObj = result.getObject(1);
+            double todayIncome = (todayObj != null) ? ((Number) todayObj).doubleValue() : 0.0;
+            System.out.println("Today's Income: " + todayIncome);
+            dashboard_IncomToday.setText("$" + String.format("%.2f", todayIncome));
+        }
+
+        // --- Total Income ---
+        prepare = connect.prepareStatement(sqlTotalIncome);
+        result = prepare.executeQuery();
+        if (result.next()) {
+            Object totalObj = result.getObject(1);
+            double totalIncome = (totalObj != null) ? ((Number) totalObj).doubleValue() : 0.0;
+            System.out.println("Total Income: " + totalIncome);
+            dashboard_totalIncome.setText("$" + String.format("%.2f", totalIncome));
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
    
    
     public void logout() {
@@ -779,6 +822,8 @@ public class adminDashboardController implements Initializable {
             dashboard_btn.setStyle("-fx-background-color: linear-gradient(to top right, #896b34, #b8a536);");
             addProducts_btn.setStyle("-fx-background-color:transparent");
             employees_btn.setStyle("-fx-background-color:transparent");
+            
+            dashboardDisplayCounts();
 
         } else if (event.getSource() == addProducts_btn) {
             dashboard_form.setVisible(false);
@@ -829,6 +874,7 @@ public class adminDashboardController implements Initializable {
         employeesGenderList();
         employees_tableView.setOnMouseClicked(event -> {
         employeesSelect();
+        dashboardDisplayCounts();
     });
        
        

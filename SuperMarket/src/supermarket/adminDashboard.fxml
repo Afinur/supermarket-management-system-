@@ -150,7 +150,7 @@
                                           </AnchorPane>
                                           <AnchorPane layoutX="610.0" layoutY="11.0" prefHeight="162.0" prefWidth="255.0" styleClass="card3" stylesheets="@dashboardDesign.css">
                                              <children>
-                                                <Label layoutX="59.0" layoutY="112.0" prefHeight="25.0" prefWidth="183.0" text="Today's Income" textFill="WHITE">
+                                                <Label layoutX="59.0" layoutY="112.0" prefHeight="25.0" prefWidth="183.0" text="Total Income" textFill="WHITE">
                                                    <font>
                                                       <Font name="Tahoma Bold" size="20.0" />
                                                    </font>
