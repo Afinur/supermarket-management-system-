@@ -104,80 +104,7 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="dashboard_form" layoutX="112.0" layoutY="140.0" prefHeight="555.0" prefWidth="901.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <AnchorPane layoutX="11.0" layoutY="8.0" prefHeight="539.0" prefWidth="878.0" stylesheets="@dashboardDesign.css" visible="false">
-                                 <styleClass>
-                                    <String fx:value="white-bg" />
-                                    <String fx:value="shadow" />
-                                 </styleClass>
-                                 <children>
-                                    <AnchorPane layoutX="1.0" prefHeight="183.0" prefWidth="879.0" stylesheets="@dashboardDesign.css">
-                                       <styleClass>
-                                          <String fx:value="white-bg" />
-                                          <String fx:value="shadow" />
-                                       </styleClass>
-                                       <children>
-                                          <AnchorPane layoutX="14.0" layoutY="9.0" prefHeight="162.0" prefWidth="255.0" styleClass="card1" stylesheets="@dashboardDesign.css">
-                                             <children>
-                                                <FontAwesomeIcon fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="102.0" size="5em" />
-                                                <Label layoutX="64.0" layoutY="118.0" prefHeight="25.0" prefWidth="183.0" text="Active Employees" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Tahoma Bold" size="20.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="dashboard_activeEmployee" alignment="CENTER_RIGHT" layoutX="72.0" layoutY="14.0" prefHeight="23.0" prefWidth="159.0" text="0" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Tahoma Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                          </AnchorPane>
-                                          <AnchorPane layoutX="312.0" layoutY="11.0" prefHeight="162.0" prefWidth="255.0" styleClass="card2" stylesheets="@dashboardDesign.css">
-                                             <children>
-                                                <Label layoutX="63.0" layoutY="120.0" prefHeight="25.0" prefWidth="183.0" text="Today's Income" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Tahoma Bold" size="20.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="dashboard_IncomToday" alignment="CENTER_RIGHT" layoutX="71.0" layoutY="16.0" prefHeight="23.0" prefWidth="159.0" text="\$0.0" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Tahoma Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                                <FontAwesomeIcon fill="WHITE" glyphName="MONEY" layoutX="24.0" layoutY="101.0" size="6em" />
-                                             </children>
-                                          </AnchorPane>
-                                          <AnchorPane layoutX="610.0" layoutY="11.0" prefHeight="162.0" prefWidth="255.0" styleClass="card3" stylesheets="@dashboardDesign.css">
-                                             <children>
-                                                <Label layoutX="59.0" layoutY="112.0" prefHeight="25.0" prefWidth="183.0" text="Total Income" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Tahoma Bold" size="20.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="dashboard_totalIncome" alignment="CENTER_RIGHT" layoutX="71.0" layoutY="16.0" prefHeight="23.0" prefWidth="159.0" text="\$0.0" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Tahoma Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                                <FontAwesomeIcon fill="WHITE" glyphName="DOLLAR" layoutX="24.0" layoutY="90.0" size="5em" />
-                                             </children>
-                                          </AnchorPane>
-                                       </children>
-                                    </AnchorPane>
-                                    <AreaChart fx:id="dashboard_chart" layoutX="90.0" layoutY="209.0" prefHeight="309.0" prefWidth="730.0" title="Income Chart Data">
-                                      <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
-                                      </xAxis>
-                                      <yAxis>
-                                        <NumberAxis side="LEFT" />
-                                      </yAxis>
-                                    </AreaChart>
-                                 </children>
-                              </AnchorPane>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="addProducts_form" layoutX="104.0" layoutY="158.0" prefHeight="555.0" prefWidth="901.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="addProducts_form" layoutX="104.0" layoutY="158.0" prefHeight="555.0" prefWidth="901.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="8.0" layoutY="13.0" prefHeight="527.0" prefWidth="201.0" stylesheets="@dashboardDesign.css">
                                  <styleClass>
@@ -306,6 +233,75 @@
                                     </Label>
                                  </children>
                               </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="dashboard_form" layoutX="12.0" layoutY="9.0" prefHeight="537.0" prefWidth="878.0" stylesheets="@dashboardDesign.css">
+                           <styleClass>
+                              <String fx:value="white-bg" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                           <children>
+                              <AnchorPane layoutX="1.0" prefHeight="202.0" prefWidth="877.0" stylesheets="@dashboardDesign.css">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <AnchorPane layoutX="20.0" layoutY="10.0" prefHeight="180.0" prefWidth="237.0" styleClass="card1" stylesheets="@dashboardDesign.css">
+                                       <children>
+                                          <FontAwesomeIcon fill="WHITE" glyphName="USERS" layoutX="26.0" layoutY="94.0" size="5em" />
+                                          <Label layoutX="61.0" layoutY="120.0" prefHeight="30.0" prefWidth="164.0" text="Active employee" textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="20.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="dashboard_activeEmployee" alignment="CENTER_RIGHT" layoutX="129.0" layoutY="26.0" prefHeight="17.0" prefWidth="99.0" text="0" textFill="WHITE">
+                                             <font>
+                                                <Font size="25.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane layoutX="320.0" layoutY="11.0" prefHeight="180.0" prefWidth="237.0" styleClass="card2" stylesheets="@dashboardDesign.css">
+                                       <children>
+                                          <Label layoutX="50.0" layoutY="115.0" prefHeight="27.0" prefWidth="155.0" text="TODAY'S INCOME" textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="dashboard_IncomToday" alignment="CENTER_RIGHT" layoutX="109.0" layoutY="21.0" prefHeight="17.0" prefWidth="99.0" text="\$0.0" textFill="WHITE">
+                                             <font>
+                                                <Font size="25.0" />
+                                             </font>
+                                          </Label>
+                                          <FontAwesomeIcon fill="WHITE" glyphName="MONEY" layoutX="23.0" layoutY="90.0" size="5em" wrappingWidth="64.28571319580078" />
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane layoutX="609.0" layoutY="11.0" prefHeight="180.0" prefWidth="237.0" styleClass="card3" stylesheets="@dashboardDesign.css">
+                                       <children>
+                                          <Label layoutX="53.0" layoutY="124.0" prefHeight="27.0" prefWidth="155.0" text="TODAY'S INCOME" textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="dashboard_totalIncome" alignment="CENTER_RIGHT" layoutX="112.0" layoutY="30.0" prefHeight="17.0" prefWidth="99.0" text="\$0.0" textFill="WHITE">
+                                             <font>
+                                                <Font size="25.0" />
+                                             </font>
+                                          </Label>
+                                          <FontAwesomeIcon fill="WHITE" glyphName="DOLLAR" layoutX="43.0" layoutY="99.0" size="7em" />
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </AnchorPane>
+                              <AreaChart fx:id="dashboard_chart" layoutX="48.0" layoutY="221.0" prefHeight="289.0" prefWidth="769.0" title="Income Chart data">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </AreaChart>
                            </children>
                         </AnchorPane>
                      </children>
