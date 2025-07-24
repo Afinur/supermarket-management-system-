@@ -4,6 +4,8 @@
  */
 package supermarket;
 
+import java.sql.Date;
+
 /**
  *
  * @author user
@@ -15,14 +17,16 @@ public class productData {
     private String productName;
     private String status;
     private Double price;
+    private Date expirationDate;
 
-    public productData(String productId, String brand, String productName, String status, Double price) {
-        this.productId = productId;
-        this.brand = brand;
-        this.productName = productName;
-        this.status = status;
-        this.price = price;
-    }
+    public productData(String productId, String brand, String productName, String status, Double price, Date expirationDate) {
+    this.productId = productId;
+    this.brand = brand;
+    this.productName = productName;
+    this.status = status;
+    this.price = price;
+    this.expirationDate = expirationDate;
+}
 
     public String getProductId() {
         return productId;
@@ -43,4 +47,7 @@ public class productData {
     public Double getPrice() {
         return price;
     }
+    public Date getExpirationDate() {
+    return expirationDate;
+}
 }

@@ -5,6 +5,7 @@
 package supermarket;
 
 //import com.sun.jdi.connect.spi.Connection;
+import java.awt.Color;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -41,7 +42,9 @@ import javafx.collections.transformation.SortedList;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
 //import java.sql.PreparedStatement;
+import java.sql.Date;
 
 /**
  *
@@ -187,8 +190,6 @@ public class adminDashboardController implements Initializable {
     @FXML
     private Button close;
     
-    @FXML
-    private DatePicker employees_date;
 
     @FXML
     private Button minimize;
@@ -202,9 +203,14 @@ public class adminDashboardController implements Initializable {
    private PreparedStatement prepare;
    private Statement statement;
    private ResultSet result;
+    @FXML
+    private Button expiringSoonButton;
+    @FXML
+    private TableColumn<productData, Date> addProducts_col_expirationDate;
     
     //lets create table for products
    
+    @FXML
    public void addProductsAdd(){
        String insertProduct = "INSERT INTO product"
                +" (product_id,brand,product_name,status,price)"
@@ -267,6 +273,7 @@ public class adminDashboardController implements Initializable {
    }
    
    
+    @FXML
    public void addProductsUpdate() {
     String updateProduct = "UPDATE product SET brand = ?, product_name = ?, status = ?, price = ? WHERE product_id = ?";
 
@@ -331,6 +338,7 @@ public class adminDashboardController implements Initializable {
 
 
 
+    @FXML
  public void addProductsDelete() {
     String deleteProduct = "DELETE FROM product WHERE product_id = ?";
 
@@ -376,6 +384,7 @@ public class adminDashboardController implements Initializable {
 
 
    
+    @FXML
    public void addProductsClear(){
        addProducts_productID.setText("");
        addProducts_brandName.setText("");
@@ -386,6 +395,7 @@ public class adminDashboardController implements Initializable {
    }
    
    private String[] statusList = {"Available" ," Not Available"};
+    @FXML
    public void addProductsStatusList(){
        List<String> listS = new ArrayList<>();
        
@@ -445,12 +455,14 @@ public class adminDashboardController implements Initializable {
            prepare = connect.prepareStatement(sql);
            result = prepare.executeQuery();
            while(result.next()){
-               prod = new productData(result.getString("product_id")
-                       ,result.getString("brand")
-                       ,result.getString("product_name")
-                       ,result.getString("status")
-                       ,result.getDouble("price"));
-               
+              prod = new productData(
+                result.getString("product_id"),
+                result.getString("brand"),
+                result.getString("product_name"),
+                result.getString("status"),
+                result.getDouble("price"),
+                result.getDate("expiration_date") // ✅
+            );
                prodList.add(prod);
                
            }
@@ -466,12 +478,13 @@ public class adminDashboardController implements Initializable {
        addProducts_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
        addProducts_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
        addProducts_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
-       
+       addProducts_col_expirationDate.setCellValueFactory(new PropertyValueFactory<>("expirationDate")); 
        addProducts_tableView.setItems( addproductsList);
        addProductsSearch();
    }
    
    
+    @FXML
    public void addProductSelect(){
        productData prod = addProducts_tableView.getSelectionModel().getSelectedItem();
        int num =addProducts_tableView.getSelectionModel().getSelectedIndex();
@@ -535,6 +548,7 @@ public class adminDashboardController implements Initializable {
       
    }
    
+    @FXML
   public void employeesSelect() {
     employeeData employeeD = employees_tableView.getSelectionModel().getSelectedItem();
     int num = employees_tableView.getSelectionModel().getSelectedIndex();
@@ -568,6 +582,7 @@ public class adminDashboardController implements Initializable {
     employees_gender.setItems(listG);
 }
 
+    @FXML
    public void employeesAdd() {
     String insertEmp = "INSERT INTO employee (employee_id, password, firstName, lastName, gender, date) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -616,6 +631,7 @@ public class adminDashboardController implements Initializable {
     }
 }
 
+    @FXML
    public void employeesClear() {
     employees_employeeID.setText("");
     employees_password.setText("");
@@ -624,6 +640,7 @@ public class adminDashboardController implements Initializable {
     employees_gender.getSelectionModel().clearSelection();
 }
 
+    @FXML
  public void updateEmployee() {
     String sql = "UPDATE employee SET password = ?, firstName = ?, lastName = ?, gender = ? WHERE employee_id = ?";
 
@@ -681,6 +698,7 @@ public class adminDashboardController implements Initializable {
     }
 }
  
+    @FXML
  public void employeesDelete() {
     String deleteSql = "DELETE FROM employee WHERE employee_id = ?";
 
@@ -811,7 +829,54 @@ public class adminDashboardController implements Initializable {
  public void defaultNavBtn(){
      dashboard_btn.setStyle("-fx-background-color: linear-gradient(to top right, #896b34, #b8a536);");
  }
+ 
+ 
+ public ObservableList<productData> getExpiringProducts() {
+    ObservableList<productData> list = FXCollections.observableArrayList();
+    String sql = "SELECT * FROM product WHERE expiration_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)";
+
+    connect = database.connectionDb();
+
+    try {
+        prepare = connect.prepareStatement(sql);
+        result = prepare.executeQuery();
+
+        while (result.next()) {
+            list.add(new productData(
+                result.getString("product_id"),
+                result.getString("brand"),
+                result.getString("product_name"),
+                result.getString("status"),
+                result.getDouble("price"),
+                result.getDate("expiration_date")
+            ));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return list;
+}
+
+ 
+ public void showExpiringSoonProducts(ActionEvent event) {
+    ObservableList<productData> expiringList = getExpiringProducts();
+
+    addProducts_col_productID.setCellValueFactory(new PropertyValueFactory<>("productId"));
+    addProducts_col_branchName.setCellValueFactory(new PropertyValueFactory<>("brand"));
+    addProducts_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+    addProducts_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+    addProducts_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+    addProducts_col_expirationDate.setCellValueFactory(new PropertyValueFactory<>("expirationDate")); // ✅
+
+    addProducts_tableView.setItems(expiringList);
+}
+
+ 
+ 
+ 
    
+    @FXML
     public void logout() {
 
         try {
@@ -868,6 +933,7 @@ public class adminDashboardController implements Initializable {
         username.setText(getData.username);
     }
 
+    @FXML
     public void switchForm(ActionEvent event) {
         if (event.getSource() == dashboard_btn) {
             dashboard_form.setVisible(true);
@@ -907,10 +973,13 @@ public class adminDashboardController implements Initializable {
         }
     }
 
+
+    @FXML
     public void close() {
         System.exit(0);
     }
 
+    @FXML
     public void minimize() {
         if (main_form != null && main_form.getScene() != null) {
             Stage stage = (Stage) main_form.getScene().getWindow();
@@ -937,5 +1006,7 @@ public class adminDashboardController implements Initializable {
        
        
     }
+
+    
 }
 
