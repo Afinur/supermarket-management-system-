@@ -38,6 +38,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.cell.PropertyValueFactory;
 //import java.sql.PreparedStatement;
@@ -112,7 +113,7 @@ public class adminDashboardController implements Initializable {
     private Button dashboard_btn;
 
     @FXML
-    private AreaChart<?, ?> dashboard_chart;
+    private AreaChart<String,Number> dashboard_chart;
 
     @FXML
     private AnchorPane dashboard_form;
@@ -279,29 +280,48 @@ public class adminDashboardController implements Initializable {
                 || addProducts_productName.getText().isEmpty()
                 || addProducts_status.getSelectionModel().getSelectedItem() == null
                 || addProducts_price.getText().isEmpty()) {
-            alert = new Alert(AlertType.ERROR);
+
+            alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
             alert.setContentText("Please fill all blank fields");
             alert.showAndWait();
         } else {
+            // Get values
+            String productId = addProducts_productID.getText().trim();
+            String brand = addProducts_brandName.getText().trim();
+            String productName = addProducts_productName.getText().trim();
+            String status = (String) addProducts_status.getSelectionModel().getSelectedItem();
+            double price = Double.parseDouble(addProducts_price.getText().trim());
+
+            // ✅ Debug Product ID
+            System.out.println("👉 DEBUG: Product ID to update = '" + productId + "'");
+
             prepare = connect.prepareStatement(updateProduct);
-            prepare.setString(1, addProducts_brandName.getText());
-            prepare.setString(2, addProducts_productName.getText());
-            prepare.setString(3, (String) addProducts_status.getSelectionModel().getSelectedItem());
-            prepare.setString(4, addProducts_price.getText());
-            prepare.setString(5, addProducts_productID.getText());
+            prepare.setString(1, brand);
+            prepare.setString(2, productName);
+            prepare.setString(3, status);
+            prepare.setDouble(4, price);
+            prepare.setString(5, productId);
 
-            prepare.executeUpdate();
+            int rowsAffected = prepare.executeUpdate();
 
-            alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Information Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Successfully Updated!");
-            alert.showAndWait();
+            if (rowsAffected > 0) {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Successfully Updated!");
+                alert.showAndWait();
 
-            addProductsShowData();
-            addProductsClear();
+                addProductsShowData();
+                addProductsClear();
+            } else {
+                alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText(null);
+                alert.setContentText("⚠ No product matched the given Product ID.");
+                alert.showAndWait();
+            }
         }
 
     } catch (Exception e) {
@@ -309,7 +329,9 @@ public class adminDashboardController implements Initializable {
     }
 }
 
-   public void addProductsDelete() {
+
+
+ public void addProductsDelete() {
     String deleteProduct = "DELETE FROM product WHERE product_id = ?";
 
     connect = database.connectionDb();
@@ -351,6 +373,7 @@ public class adminDashboardController implements Initializable {
         e.printStackTrace();
     }
 }
+
 
    
    public void addProductsClear(){
@@ -754,8 +777,40 @@ public class adminDashboardController implements Initializable {
     }
 }
 
-
    
+   
+
+  public void loadIncomeChart() {
+    String sql = "SELECT date, SUM(total) AS total_income FROM customer_receipt GROUP BY date ORDER BY date ASC";
+
+    connect = database.connectionDb();
+
+    try {
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Daily Income");
+
+        prepare = connect.prepareStatement(sql);
+        result = prepare.executeQuery();
+
+        while (result.next()) {
+            String date = result.getString("date");
+            double income = result.getDouble("total_income");
+
+            series.getData().add(new XYChart.Data<>(date, income));
+        }
+
+        dashboard_chart.getData().clear();
+        dashboard_chart.getData().add(series);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+  
+ public void defaultNavBtn(){
+     dashboard_btn.setStyle("-fx-background-color: linear-gradient(to top right, #896b34, #b8a536);");
+ }
    
     public void logout() {
 
@@ -824,6 +879,7 @@ public class adminDashboardController implements Initializable {
             employees_btn.setStyle("-fx-background-color:transparent");
             
             dashboardDisplayCounts();
+             loadIncomeChart();
 
         } else if (event.getSource() == addProducts_btn) {
             dashboard_form.setVisible(false);
@@ -875,6 +931,8 @@ public class adminDashboardController implements Initializable {
         employees_tableView.setOnMouseClicked(event -> {
         employeesSelect();
         dashboardDisplayCounts();
+         loadIncomeChart();
+         defaultNavBtn();
     });
        
        
