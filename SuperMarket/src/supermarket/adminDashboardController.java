@@ -45,6 +45,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 //import java.sql.PreparedStatement;
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -209,73 +210,80 @@ public class adminDashboardController implements Initializable {
     private TableColumn<productData, Date> addProducts_col_expirationDate;
     
     //lets create table for products
-   
     @FXML
-   public void addProductsAdd(){
-       String insertProduct = "INSERT INTO product"
-               +" (product_id,brand,product_name,status,price)"
-               +"VALUES(?,?,?,?,?)";
-       
-       
-       connect =database.connectionDb();
-       
-       try{
-           
-           Alert alert;
-           
-           if(addProducts_productID.getText().isEmpty()||addProducts_brandName.getText().isEmpty()
-                   ||addProducts_productName.getText().isEmpty()
-                   ||addProducts_status.getSelectionModel().getSelectedItem()==null
-                   ||addProducts_price.getText().isEmpty()){
-               alert = new Alert (AlertType.ERROR);
-               alert.setTitle("error message");
-               alert.setHeaderText(null);
-               alert.setContentText("PLEASE fill all the blank");
-               alert.showAndWait();
-           }
-           else{
-               
-               String check = "SELECT product_id FROM product WHERE product_id ='"
-               +addProducts_productID.getText()+"' ";
-               
-               statement = connect.createStatement();
-               result = statement.executeQuery(check);
-               
-               if(result.next()){
-               alert = new Alert (AlertType.ERROR);
-               alert.setTitle("error message");
-               alert.setHeaderText(null);
-               alert.setContentText("product ID:" +addProducts_productID.getText() + "was already exist!");
-               alert.showAndWait();
-               }
-               
-               else{
-              prepare = connect.prepareStatement(insertProduct);
-              prepare.setString(1, addProducts_productID.getText());
-               prepare.setString(2, addProducts_brandName.getText());
-               prepare.setString(3, addProducts_productName.getText());
-                prepare.setString(4,(String) addProducts_status.getSelectionModel().getSelectedItem());
-                prepare.setString(5, addProducts_price.getText());
-                
-                prepare.executeUpdate();
-                alert = new Alert (AlertType.INFORMATION);
-               alert.setTitle("information message");
-               alert.setHeaderText(null);
-               alert.setContentText("sucessfully added!");
-               alert.showAndWait();
-               
-               addProductsShowData();
-                addProductsClear();
-               
-               }
-           }
-       }catch(Exception e){e.printStackTrace();}
-   }
+    private DatePicker addProducts_expirationDate;
+    
    
    
     @FXML
-   public void addProductsUpdate() {
-    String updateProduct = "UPDATE product SET brand = ?, product_name = ?, status = ?, price = ? WHERE product_id = ?";
+    public void addProductsAdd() {
+    String insertProduct = "INSERT INTO product (product_id, brand, product_name, status, price, expiration_date) VALUES (?, ?, ?, ?, ?, ?)";
+
+    connect = database.connectionDb();
+
+    try {
+        Alert alert;
+
+        // Validation
+        if (addProducts_productID.getText().isEmpty()
+                || addProducts_brandName.getText().isEmpty()
+                || addProducts_productName.getText().isEmpty()
+                || addProducts_status.getSelectionModel().getSelectedItem() == null
+                || addProducts_price.getText().isEmpty()
+                || addProducts_expirationDate.getValue() == null) {
+
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please fill all blank fields");
+            alert.showAndWait();
+            return;
+        }
+
+        // Check if product already exists
+        String checkData = "SELECT product_id FROM product WHERE product_id = ?";
+        prepare = connect.prepareStatement(checkData);
+        prepare.setString(1, addProducts_productID.getText());
+        result = prepare.executeQuery();
+
+        if (result.next()) {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Product ID already exists!");
+            alert.showAndWait();
+        } else {
+            prepare = connect.prepareStatement(insertProduct);
+            prepare.setString(1, addProducts_productID.getText());
+            prepare.setString(2, addProducts_brandName.getText());
+            prepare.setString(3, addProducts_productName.getText());
+            prepare.setString(4, (String) addProducts_status.getSelectionModel().getSelectedItem());
+            prepare.setString(5, addProducts_price.getText());
+
+            // expiration_date
+            LocalDate localDate = addProducts_expirationDate.getValue();
+            prepare.setDate(6, java.sql.Date.valueOf(localDate));
+
+            prepare.executeUpdate();
+
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Successfully Added!");
+            alert.showAndWait();
+
+            // Refresh table
+            addProductsShowData();
+            addProductsClear();
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+   
+    public void addProductsUpdate() {
+    String updateProduct = "UPDATE product SET brand = ?, product_name = ?, status = ?, price = ?, expiration_date = ? WHERE product_id = ?";
 
     connect = database.connectionDb();
 
@@ -286,60 +294,56 @@ public class adminDashboardController implements Initializable {
                 || addProducts_brandName.getText().isEmpty()
                 || addProducts_productName.getText().isEmpty()
                 || addProducts_status.getSelectionModel().getSelectedItem() == null
-                || addProducts_price.getText().isEmpty()) {
+                || addProducts_price.getText().isEmpty()
+                || addProducts_expirationDate.getValue() == null) {
 
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
             alert.setContentText("Please fill all blank fields");
             alert.showAndWait();
-        } else {
-            // Get values
-            String productId = addProducts_productID.getText().trim();
-            String brand = addProducts_brandName.getText().trim();
-            String productName = addProducts_productName.getText().trim();
-            String status = (String) addProducts_status.getSelectionModel().getSelectedItem();
-            double price = Double.parseDouble(addProducts_price.getText().trim());
-
-            // ✅ Debug Product ID
-            System.out.println("👉 DEBUG: Product ID to update = '" + productId + "'");
-
-            prepare = connect.prepareStatement(updateProduct);
-            prepare.setString(1, brand);
-            prepare.setString(2, productName);
-            prepare.setString(3, status);
-            prepare.setDouble(4, price);
-            prepare.setString(5, productId);
-
-            int rowsAffected = prepare.executeUpdate();
-
-            if (rowsAffected > 0) {
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Successfully Updated!");
-                alert.showAndWait();
-
-                addProductsShowData();
-                addProductsClear();
-            } else {
-                alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning");
-                alert.setHeaderText(null);
-                alert.setContentText("⚠ No product matched the given Product ID.");
-                alert.showAndWait();
-            }
+            return;
         }
+
+        prepare = connect.prepareStatement(updateProduct);
+        prepare.setString(1, addProducts_brandName.getText());
+        prepare.setString(2, addProducts_productName.getText());
+        prepare.setString(3, (String) addProducts_status.getSelectionModel().getSelectedItem());
+        prepare.setString(4, addProducts_price.getText());
+
+        LocalDate localDate = addProducts_expirationDate.getValue();
+        prepare.setDate(5, java.sql.Date.valueOf(localDate));
+
+        prepare.setString(6, addProducts_productID.getText());
+
+        prepare.executeUpdate();
+
+        alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Message");
+        alert.setHeaderText(null);
+        alert.setContentText("Successfully Updated!");
+        alert.showAndWait();
+
+        // Refresh table
+        addProductsShowData();
+        addProductsClear();
 
     } catch (Exception e) {
         e.printStackTrace();
     }
 }
 
+// Product Clear Function
+public void addProductsClear() {
+    addProducts_productID.setText("");
+    addProducts_brandName.setText("");
+    addProducts_productName.setText("");
+    addProducts_status.getSelectionModel().clearSelection();
+    addProducts_price.setText("");
+    addProducts_expirationDate.setValue(null); // Clear the DatePicker
+}
 
-
-    @FXML
- public void addProductsDelete() {
+    public void addProductsDelete() {
     String deleteProduct = "DELETE FROM product WHERE product_id = ?";
 
     connect = database.connectionDb();
@@ -348,33 +352,36 @@ public class adminDashboardController implements Initializable {
         Alert alert;
 
         if (addProducts_productID.getText().isEmpty()) {
-            alert = new Alert(AlertType.ERROR);
+            alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
-            alert.setContentText("Please select the product you want to delete");
+            alert.setContentText("Please select a product to delete.");
             alert.showAndWait();
-        } else {
-            alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation Message");
+            return;
+        }
+
+        // Confirmation alert before deletion
+        alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Message");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to DELETE product ID: " + addProducts_productID.getText() + "?");
+
+        Optional<ButtonType> option = alert.showAndWait();
+
+        if (option.isPresent() && option.get().equals(ButtonType.OK)) {
+            prepare = connect.prepareStatement(deleteProduct);
+            prepare.setString(1, addProducts_productID.getText());
+            prepare.executeUpdate();
+
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Message");
             alert.setHeaderText(null);
-            alert.setContentText("Are you sure you want to DELETE product ID: " + addProducts_productID.getText() + "?");
+            alert.setContentText("Product deleted successfully!");
+            alert.showAndWait();
 
-            Optional<ButtonType> option = alert.showAndWait();
-
-            if (option.get().equals(ButtonType.OK)) {
-                prepare = connect.prepareStatement(deleteProduct);
-                prepare.setString(1, addProducts_productID.getText());
-                prepare.executeUpdate();
-
-                alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Information Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Successfully Deleted!");
-                alert.showAndWait();
-
-                addProductsShowData();
-                addProductsClear();
-            }
+            // Refresh table
+            addProductsShowData();
+            addProductsClear();
         }
 
     } catch (Exception e) {
@@ -382,17 +389,8 @@ public class adminDashboardController implements Initializable {
     }
 }
 
-
    
-    @FXML
-   public void addProductsClear(){
-       addProducts_productID.setText("");
-       addProducts_brandName.setText("");
-       addProducts_productName.setText("");
-        addProducts_status.getSelectionModel().clearSelection();
-         addProducts_price.setText("");
-       
-   }
+   
    
    private String[] statusList = {"Available" ," Not Available"};
     @FXML
@@ -497,6 +495,7 @@ public class adminDashboardController implements Initializable {
        addProducts_brandName.setText(prod.getBrand());
        addProducts_productName.setText(prod.getProductName());
        addProducts_price.setText(String.valueOf(prod.getPrice()));
+        addProducts_expirationDate.setValue(prod.getExpirationDate().toLocalDate());
    }
    
    
@@ -859,6 +858,7 @@ public class adminDashboardController implements Initializable {
 }
 
  
+    @FXML
  public void showExpiringSoonProducts(ActionEvent event) {
     ObservableList<productData> expiringList = getExpiringProducts();
 
