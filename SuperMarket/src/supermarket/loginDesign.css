@@ -11,7 +11,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 
 .left-from{
     
-    -fx-background-color: linear-gradient(to top right, #64522c, #a8962b);
+    -fx-background-color: linear-gradient(to top right, #aed000, #f0f7b0);
     -fx-border-color: #000;
     -fx-border-width: .4px 0px .4px .4px; /*TOP RIGHT BOTTOM LEFT*/
     
@@ -23,7 +23,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-border-width:.4px .4px .4px .0px
 }
 
-.textfield {
+/*.textfield {
      -fx-background-color: linear-gradient(to bottom, #efefef, #eee);
      -fx-background-radius:8px;
      -fx-border-color:#000;
@@ -31,6 +31,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
      -fx-font-family:"Tahome";
      -fx-font-size:13px;
      -fx-border-radius:8px;
+     
+}*/
+.textfield {
+     -fx-background-color:#fff;
+/*     -fx-background-radius:3px;*/
+     -fx-border-color:#4169e1; /* ROYELBLUE*/
+     -fx-border-width:1px;
+     -fx-font-family:"Tahome";
+     -fx-font-size:13px;
+     -fx-border-radius:5px;
      
 }
 .textfield:focused{

@@ -13,6 +13,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
@@ -52,29 +54,23 @@
                <left>
                   <AnchorPane prefHeight="555.0" prefWidth="166.0" stylesheets="@dashboardDesign.css" BorderPane.alignment="CENTER">
                      <children>
-                        <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="53.0" layoutY="124.0" size="8em" />
-                        <Label layoutX="54.0" layoutY="138.0" text="Welcome" textFill="WHITE">
-                           <font>
-                              <Font name="Tahoma" size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="username" layoutX="38.0" layoutY="161.0" prefHeight="26.0" prefWidth="136.0" text="HomeBasket" textFill="WHITE">
+                        <Label fx:id="username" layoutX="32.0" layoutY="131.0" prefHeight="26.0" prefWidth="136.0" text="HomeBasket">
                            <font>
                               <Font name="Arial Bold" size="22.0" />
                            </font>
                         </Label>
                         <Line endX="79.0" endY="-1.52587890625E-5" layoutX="103.0" layoutY="199.0" startX="-89.0" startY="-1.52587890625E-5" stroke="WHITE" />
-                        <Button fx:id="dashboard_btn" layoutX="19.0" layoutY="248.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="180.0" styleClass="nav-button" stylesheets="@dashboardDesign.css" text="Dashboard">
+                        <Button fx:id="dashboard_btn" layoutX="15.0" layoutY="246.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="180.0" styleClass="nav-button" stylesheets="@dashboardDesign.css" text="  Dashboard">
                            <graphic>
                               <FontAwesomeIcon fill="WHITE" glyphName="DASHBOARD" size="1.8em" text="" wrappingWidth="22.0" />
                            </graphic>
                         </Button>
-                        <Button fx:id="addProducts_btn" layoutX="17.0" layoutY="283.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="163.0" styleClass="nav-button" stylesheets="@dashboardDesign.css" text="Add Products">
+                        <Button fx:id="addProducts_btn" layoutX="16.0" layoutY="283.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="163.0" styleClass="nav-button" stylesheets="@dashboardDesign.css" text="  Add Products">
                            <graphic>
                               <FontAwesomeIcon fill="WHITE" glyphName="PLUS_CIRCLE" size="1.8em" text="" />
                            </graphic>
                         </Button>
-                        <Button fx:id="employees_btn" layoutX="17.0" layoutY="313.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="163.0" styleClass="nav-button" stylesheets="@dashboardDesign.css" text="Employees">
+                        <Button fx:id="employees_btn" layoutX="17.0" layoutY="320.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="163.0" styleClass="nav-button" stylesheets="@dashboardDesign.css" text="  Employees">
                            <graphic>
                               <FontAwesomeIcon fill="WHITE" glyphName="USER" size="1.8em" text="" />
                            </graphic>
@@ -92,6 +88,26 @@
                            <font>
                               <Font name="Tahoma" size="18.0" />
                            </font></Label>
+                        <ImageView fitHeight="34.0" fitWidth="33.0" layoutX="18.0" layoutY="322.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/icons8-add-user-female-skin-type-7-48.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="34.0" fitWidth="33.0" layoutX="20.0" layoutY="286.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/icons8-add-to-shopping-basket-48.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="34.0" fitWidth="33.0" layoutX="19.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/icons8-dashboard-48.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="133.0" fitWidth="182.0" layoutX="31.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/Welcome.gif" />
+                           </image>
+                        </ImageView>
                      </children>
                      <BorderPane.margin>
                         <Insets />

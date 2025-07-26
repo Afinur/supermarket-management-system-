@@ -53,6 +53,7 @@ public class FXMLDocumentController implements Initializable {
     
     
     
+    @FXML
     public void employeeLogin(){
       
         String employeeData = "SELECT * FROM employee WHERE employee_id=? and  password = ?";
@@ -131,6 +132,7 @@ public class FXMLDocumentController implements Initializable {
     
     }
 
+    @FXML
     public void adminLogin() {
         String adminData = "SELECT * FROM admin WHERE username = ? AND password = ?";
         connect = database.connectionDb();
@@ -196,6 +198,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
+    @FXML
     public void switchForm(ActionEvent event) {
         if (event.getSource() == admin_hyperLink) {
             admin_from.setVisible(false);
@@ -206,6 +209,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
+    @FXML
     public void close() {
         System.exit(0);
     }
